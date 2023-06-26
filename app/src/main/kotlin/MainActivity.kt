@@ -6,35 +6,24 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.databinding.DataBindingUtil
-
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
-
     val R = resources
+
     companion object {
         private const val CAMERA_PERMISSION_REQUEST_CODE = 100
     }
 
     private var cameraManager: CameraManager? = null
-    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        /*
         setContentView(R.layout.activity_main)
 
         cameraManager = getSystemService(CAMERA_SERVICE) as? CameraManager
 
         requestCameraPermission()
-
-         */
-
-        // レイアウトを設定します。
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
     }
 
     private fun requestCameraPermission() {
@@ -45,25 +34,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun openCamera() {
-        val cameraManager = getSystemService(Context.CAMERA_SERVICE) as CameraManager
-        cameraManager.openCamera(
-            "0",
-            object : CameraDevice.StateCallback() {
-                override fun onOpened(camera: CameraDevice) {
-                    // ...
-                }
-
-                override fun onDisconnected(camera: CameraDevice) {
-                    // ...
-                }
-
-                override fun onError(camera: CameraDevice, error: Int) {
-                    // ...
-                }
-            },
-            null
-        )
+    private fun openCamera() {
+        try {
+            val cameraId = cameraManager?.cameraIdList?.get(0)
+            cameraManager?.openCamera(cameraId, null, null)
+        } catch (e: CameraAccessException) {
+            e.printStackTrace()
+        }
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
