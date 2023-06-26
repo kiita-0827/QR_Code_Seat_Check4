@@ -16,14 +16,28 @@ class MainActivity : AppCompatActivity() {
     }
 
     private var cameraManager: CameraManager? = null
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        /*
         setContentView(R.layout.activity_main)
 
         cameraManager = getSystemService(CAMERA_SERVICE) as? CameraManager
 
         requestCameraPermission()
+
+         */
+
+        // レイアウトを設定します。
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        // カメラビューにリスナーを設定します。
+        binding.cameraView.setOnClickListener {
+            openCamera()
+        }
     }
 
     private fun requestCameraPermission() {
