@@ -6,11 +6,15 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+
 
 class MainActivity : AppCompatActivity() {
 
-    val R = resources
+    private lateinit var binding: ActivityMainBinding
 
+    val R = resources
     companion object {
         private const val CAMERA_PERMISSION_REQUEST_CODE = 100
     }
@@ -31,13 +35,7 @@ class MainActivity : AppCompatActivity() {
          */
 
         // レイアウトを設定します。
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        // カメラビューにリスナーを設定します。
-        binding.cameraView.setOnClickListener {
-            openCamera()
-        }
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
     }
 
     private fun requestCameraPermission() {
