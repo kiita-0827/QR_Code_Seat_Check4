@@ -9,6 +9,8 @@ import androidx.core.content.ContextCompat
 
 class MainActivity : AppCompatActivity() {
 
+    val R = resources
+
     companion object {
         private const val CAMERA_PERMISSION_REQUEST_CODE = 100
     }
@@ -32,13 +34,25 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun openCamera() {
-        try {
-            val cameraId = cameraManager?.cameraIdList?.get(0)
-            cameraManager?.openCamera(cameraId, null, null)
-        } catch (e: CameraAccessException) {
-            e.printStackTrace()
-        }
+    fun openCamera() {
+        val cameraManager = getSystemService(Context.CAMERA_SERVICE) as CameraManager
+        cameraManager.openCamera(
+            "0",
+            object : CameraDevice.StateCallback() {
+                override fun onOpened(camera: CameraDevice) {
+                    // ...
+                }
+
+                override fun onDisconnected(camera: CameraDevice) {
+                    // ...
+                }
+
+                override fun onError(camera: CameraDevice, error: Int) {
+                    // ...
+                }
+            },
+            null
+        )
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
